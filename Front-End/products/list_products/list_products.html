@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
+
+    <title>Página principal</title>
+</head>
+
+<body>
+    <div>
+        <div class="navbar navbar-dark bg-dark" id="myTopnav">
+            <a href="./../../index.html" class="active">Administrar recursos</a>
+            <a href="./../products.html">Productos</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+        <div class="menu container my-5 text-center">
+            <h1>Ver productos</h1>
+            <div class="topnav" id="myTopnav">
+                <a href="./list_products.html">Ver productos</a><a> |</a>
+                <a href="./../do_product/do_product.html">Crear producto</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div class="menu container my-5 text-center">
+            <div class="mt-5">
+                <table class="table" id="tableProductT">
+                    <thead>
+                        <tr>
+                            <th scope="col">Producto</th>
+                            <th scope="col">Sabor</th>
+                            <th scope="col">Linea de producto</th>
+                            <th scope="col">opciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="content"></tbody>
+                </table>
+                <button class="btn btn-primary" onclick="getData()">
+            Ver productos
+          </button>
+            </div>
+
+            <script>
+                function getData() {
+                    url = 'http://127.0.0.1:5000/products/complete';
+                    fetch(url)
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log('Datos: ', data);
+                            table(data);
+                        })
+                        .catch(() =>
+                            console.log(
+                                'Can’t access ' + url + ' response. Blocked by browser?'
+                            )
+                        );
+                }
+                var conten = document.querySelector('#content');
+
+                function table(datos) {
+                    conten.innerHTML = '';
+                    for (let product of datos) {
+                        conten.innerHTML += `
+                <tr>
+                    <form id="deleteForm" class="row align-items-center">
+                    <td contenteditable='true' href="#" id="prod">${product.producto}</td>
+                    <td contenteditable='true' href="#" id="fla">${product.sabor}</td>
+                    <td contenteditable='true' href="#" id="li">${product.linea}</td>
+                    <td>
+                        <div>
+                            <button class="btn btn-primary " type="submit">Modificar</button>
+                            <button class="btn btn btn-danger" id="buttonDelete" type="submit" onclick="deleteProduct()">Eliminar producto</button>
+                        </div>
+                    </td>
+                    </form>
+                </tr>
+                `;
+                    }
+                }
+            </script>
+            <script>
+                function deleteProduct() {
+                    console.log('ini')
+                    var formDelete = document.getElementById('deleteForm');
+
+                    formDelete.addEventListener('submit', function(e) {
+                        e.preventDefault();
+
+                        var data = new FormData(formDelete);
+                        var url = 'http://localhost:5000/products/';
+                        var productDeleteData = data.get('prod');
+                        var flavorDeleteData = data.get('fla');
+                        var linetDeleteData = data.get('li');
+                        fetch(url + productDeleteData + '/' + flavorDeleteData + '/' + lineDeleteData, {
+                                method: 'DELETE',
+                                mode: 'cors',
+                                headers: {
+                                    Accept: 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin': '*',
+                                },
+                            })
+                            .then(res => {
+                                console.log('res', res);
+                                res.json()
+                            })
+                            .then(data => {
+                                console.log('data', data);
+                                data.json()
+                            })
+                            .catch(() =>
+                                console.log(
+                                    'Can’t access ' + url + productDeleteData + '/' + flavorDeleteData + '/' + lineDeleteData + ' response. Blocked by browser?'
+                                )
+                            );
+                    });
+                }
+            </script>
+        </div>
+    </div>
+</body>
+
+</html>

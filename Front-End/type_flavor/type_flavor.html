@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
+
+    <title>Sabor</title>
+</head>
+
+<body>
+    <div>
+        <div class="navbar navbar-dark bg-dark" id="myTopnav">
+            <a href="./../index.html" class="active">Administrar recursos</a>
+            <a href="./../products/products.html">Productos</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+        <div class="menu container my-5 text-center">
+            <h1>Sabores</h1>
+            <div class="topnav" id="myTopnav">
+                <a href="./../type_product/type_product.html" class="active">Tipo de producto</a><a> |</a>
+                <a href="./type_flavor.html">Sabores</a><a> |</a>
+                <a href="./../type_lines/type_lines.html">Lineas de producción</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div>
+            <div class="container my-5 text-center">
+                <div class="mt-5">
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Sabor</th>
+                            </tr>
+                        </thead>
+                        <tbody id="content"></tbody>
+                    </table>
+                    <button class="btn btn-primary" onclick="getData()">
+                        Ver sabores
+                    </button>
+                </div>
+                <script>
+                    function getData() {
+                        url = 'http://127.0.0.1:5000/flavors';
+                        fetch(url)
+                            .then(res => res.json())
+                            .then(datos => {
+                                table(datos)
+                            })
+                            .catch(() =>
+                                console.log('Can’t access ' + url + ' response. Blocked by browser?')
+                            )
+                    }
+                    var conten = document.querySelector('#content');
+
+                    function table(datos) {
+                        conten.innerHTML = '';
+                        for (let product of datos) {
+                            conten.innerHTML += `
+                    <tr>
+                        <td>${product.id}</td>
+                        <td>${product.sabor}</td>
+                    </tr>
+                    `;
+                        }
+                    }
+                </script>
+
+                <div class="container my-5 text-center">
+                    <div class="container my-5">
+                        <form id="postFormFlavor" class="row align-items-center" method="POST">
+                            <div class="col-3"><input type="text" id="flavorName" name="flavorName" placeholder="Ingrese sabor" class="form-control my-3" />
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn-primary " type="submit" onclick="postFlover()">Nuevo sabor</button>
+                            </div>
+                        </form>
+                        <div class="mt-3" id="answerPostFlavor"></div>
+                        <script>
+                            function postFlover() {
+                                var formPostFlavor = document.getElementById('postFormFlavor');
+                                var answerPost = document.getElementById('answerPostFlavor');
+
+                                formPostFlavor.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+
+                                    var urlPost = 'http://127.0.0.1:5000/flavors';
+                                    var dataPostF = new FormData(formPostFlavor);
+                                    var sendData = {
+                                        name: dataPostF.get('flavorName')
+                                    };
+                                    fetch(urlPost, {
+                                            method: 'POST',
+                                            mode: 'cors',
+                                            headers: {
+                                                Accept: 'application/json',
+                                                'Content-Type': 'application/json',
+                                                'Access-Control-Allow-Origin': '*',
+                                            },
+                                            body: JSON.stringify(sendData),
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            if (data === 'error') {
+                                                answerPost.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                Error
+                </div>
+                `;
+                                            } else {
+                                                answerPost.innerHTML = `
+                <div class="alert alert-primary" role="alert">
+                    Guardado
+                </div>
+                `;
+                                            }
+                                        })
+                                        .catch(() =>
+                                            console.log('Can’t access ' + urlPost + ' response. Blocked by browser?')
+                                        );
+                                });
+
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div class="container my-5 text-center">
+                    <div class="container my-5">
+                        <form id="putFormFlover" class="row align-items-center" method="PUT">
+                            <div class="col-3">
+                                <div>
+                                    <input type="text" id="floverSearchPut" name="floverSearchPut" placeholder="Ingresa sabor a cambiar" class="form-control my-3" />
+                                </div>
+                                <div>
+                                    <input type="text" id="floverChangePut" name="floverChangePut" placeholder="Ingresa nuevo sabor" class="form-control my-3" />
+                                </div>
+                            </div>
+                            <div class="col-3"><button class="btn btn-primary" type="submit" onclick="putFlover()">Cambiar sabor</button></div>
+                        </form>
+                        <div class="mt-3" id="answerPutFlover"></div>
+                        <script>
+                            function putFlover() {
+                                var formPutFlavor = document.getElementById('putFormFlover');
+                                var answerPut = document.getElementById('answerPutFlover');
+
+                                formPutFlavor.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+
+                                    var url = 'http://127.0.0.1:5000/flavors/';
+                                    var dataPut = new FormData(formPutFlavor);
+
+                                    console.log('Form', dataPut);
+                                    var dataSearchF = dataPut.get('floverSearchPut');
+
+                                    var dataSendF = {
+                                        name: dataPut.get('floverChangePut')
+                                    };
+                                    console.log('Data send', dataSendF);
+
+                                    fetch(url + dataSearchF, {
+                                            method: 'PUT',
+                                            mode: 'cors',
+                                            headers: {
+                                                Accept: 'application/json',
+                                                'Content-Type': 'application/json',
+                                                'Access-Control-Allow-Origin': '*',
+                                            },
+                                            body: JSON.stringify(dataSendF),
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            console.log('Data put', data);
+                                            if (data === 'error') {
+                                                answerPut.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Llena todos los campos
+                </div>
+                `;
+                                            } else {
+                                                answerPut.innerHTML = `
+                <div class="alert alert-primary" role="alert">
+                    Modificado correctamente
+                </div>
+                `;
+                                            }
+                                        })
+                                        .catch(() =>
+                                            console.log(
+                                                'Can’t access ' + url + dataSearchF + ' response. Blocked by browser?'
+                                            )
+                                        );
+                                });
+
+                            }
+                        </script>
+                    </div>
+                </div>
+                <div>
+                    <div class="container my-5">
+                        <form id="deleteFormFlover" class="row align-items-center">
+                            <div class="col-3"><input type="text" name="floverSearch" placeholder="Ingresa producto a eliminar" class="form-control my-3" />
+                            </div>
+                            <div class="col-3">
+                                <button class="btn btn btn-danger" type="submit" onclick="deleteFlover()">Eliminar linea de sabor</button>
+                            </div>
+
+
+                        </form>
+
+                        <div class="mt-3" id="answerDeleteFlover"></div>
+                        <script>
+                            function deleteFlover() {
+                                var formDeleteF = document.getElementById('deleteFormFlover');
+                                var answerDelete = document.getElementById('answerDeleteFlover');
+
+                                formDeleteF.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+
+                                    var url = 'http://127.0.0.1:5000/flavors/';
+                                    var dataDF = new FormData(formDeleteF);
+                                    var dataSearchDF = dataDF.get('floverSearch');
+                                    fetch(url + dataSearchDF, {
+                                            method: 'DELETE',
+                                            mode: 'cors',
+                                            headers: {
+                                                Accept: 'application/json',
+                                                'Content-Type': 'application/json',
+                                                'Access-Control-Allow-Origin': '*',
+                                            },
+                                        })
+                                        .then(res => res.json())
+                                        .then(data => {
+                                            console.log('data: Delete', data);
+                                            if (data === 'error') {
+                                                answerDelete.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    Llena todos los campos
+                </div>
+                `;
+                                            } else {
+                                                answerDelete.innerHTML = `
+                <div class="alert alert-primary" role="alert">
+                    Eliminado
+                </div>
+                `;
+                                            }
+                                        })
+                                        .catch(() =>
+                                            console.log(
+                                                'Can’t access ' + url + dataSearch + ' response. Blocked by browser?'
+                                            )
+                                        );
+                                });
+
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+</body>
+
+</html>

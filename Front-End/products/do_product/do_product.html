@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
+
+    <title>Página principal</title>
+</head>
+
+<body>
+    <div>
+        <div class="navbar navbar-dark bg-dark" id="myTopnav">
+            <a href="./../../index.html" class="active">Administrar recursos</a>
+            <a href="./../products.html">Productos</a>
+            <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                <i class="fa fa-bars"></i>
+            </a>
+        </div>
+        <div class="menu container my-5 text-center">
+            <h1>Crear productos</h1>
+            <div class="topnav" id="myTopnav">
+                <a href="./../list_products/list_products.html">Ver producto</a><a> |</a>
+                <a href="./do_product.html">Crear producto</a>
+                <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+                    <i class="fa fa-bars"></i>
+                </a>
+            </div>
+        </div>
+        <div class="menu container my-5 text-center">
+            <hr>
+            <div class="row aling-items-center">
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getData()" class="dropbtn">Producto</button>
+                            <div id="myDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getData() {
+                            url = 'http://127.0.0.1:5000/products';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datos) => {
+                                    dropdown(datos);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#myDropdown');
+
+                        function dropdown(datos) {
+                            conten.innerHTML = '';
+                            for (let product of datos) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.producto}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getDataFlavor()" class="dropbtn">Sabor</button>
+                            <div id="floverDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getDataFlavor() {
+                            url = 'http://127.0.0.1:5000/flavors';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datosFlavor) => {
+                                    dropdownFlavor(datosFlavor);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#floverDropdown');
+
+                        function dropdownFlavor(datosFlavor) {
+                            conten.innerHTML = '';
+                            for (let product of datosFlavor) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.sabor}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">
+                    Crear nuevo sabor del producto
+                </button>
+            </div>
+            <hr>
+            <div class="row aling-items-center">
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getData()" class="dropbtn">Producto</button>
+                            <div id="myDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getData() {
+                            url = 'http://127.0.0.1:5000/products';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datos) => {
+                                    dropdown(datos);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#myDropdown');
+
+                        function dropdown(datos) {
+                            conten.innerHTML = '';
+                            for (let product of datos) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.producto}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getDataLine()" class="dropbtn">
+                  linea de producto
+                </button>
+                            <div id="lineDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getDataLine() {
+                            url = 'http://127.0.0.1:5000/productsline';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datosLine) => {
+                                    dropdownLine(datosLine);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#lineDropdown');
+
+                        function dropdownLine(datosLine) {
+                            conten.innerHTML = '';
+                            for (let product of datosLine) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.producto}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">
+          Crear nuevo producto con linea de producto 
+        </button>
+            </div>
+            <hr>
+            <div class="row aling-items-center">
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getData()" class="dropbtn">Producto</button>
+                            <div id="myDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getData() {
+                            url = 'http://127.0.0.1:5000/products';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datos) => {
+                                    dropdown(datos);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#myDropdown');
+
+                        function dropdown(datos) {
+                            conten.innerHTML = '';
+                            for (let product of datos) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.producto}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getDataFlavor()" class="dropbtn">Sabor</button>
+                            <div id="floverDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getDataFlavor() {
+                            url = 'http://127.0.0.1:5000/flavors';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datosFlavor) => {
+                                    dropdownFlavor(datosFlavor);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#floverDropdown');
+
+                        function dropdownFlavor(datosFlavor) {
+                            conten.innerHTML = '';
+                            for (let product of datosFlavor) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.sabor}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="col-4">
+                    <div class="mt-5">
+                        <div class="dropdown-toggle" data-toggle="dropdown">
+                            <button onclick="getDataLine()" class="dropbtn">
+                  linea de producto
+                </button>
+                            <div id="lineDropdown" class="dropdown-menu"></div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function getDataLine() {
+                            url = 'http://127.0.0.1:5000/productsline';
+                            fetch(url)
+                                .then((res) => res.json())
+                                .then((datosLine) => {
+                                    dropdownLine(datosLine);
+                                })
+                                .catch(() =>
+                                    console.log(
+                                        'Can’t access ' + url + ' response. Blocked by browser?'
+                                    )
+                                );
+                        }
+                        var conten = document.querySelector('#lineDropdown');
+
+                        function dropdownLine(datosLine) {
+                            conten.innerHTML = '';
+                            for (let product of datosLine) {
+                                console.log(product);
+                                conten.innerHTML += `
+                            <a class="dropdown-item" href="#">${product.producto}</a>
+                    `;
+                            }
+                        }
+                    </script>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-primary" type="submit">
+                    Crear nuevo producto
+                </button>
+            </div>
+        </div>
+</body>
+
+</html>
